@@ -28,11 +28,21 @@ async function run() {
     await client.connect();
 
     const productCollection = client.db("productDB").collection("product");
+    const cartCollection = client.db("productDB").collection("cart");
 
     app.post("/product", async (req, res) => {
       const product = req.body;
 
       const result = await productCollection.insertOne(product)
+
+      res.send(result)
+
+    })
+    // set cart property to the database
+    app.post("/cart", async (req, res) => {
+      const cart = req.body;
+
+      const result = await cartCollection.insertOne(cart)
 
       res.send(result)
 
