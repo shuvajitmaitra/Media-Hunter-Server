@@ -54,6 +54,12 @@ async function run() {
       res.send(result);
     });
 
+// get cart form the database
+    app.get("/cart", async (req, res) => {
+      const result = await cartCollection.find().toArray();
+      res.send(result);
+    });
+
     // for update ..................
     app.get("/product/:id", async (req, res) => {
       const id = req.params.id;
