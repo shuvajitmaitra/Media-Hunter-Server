@@ -48,35 +48,45 @@ async function run() {
 
     })
 
-// get data form the database
+    // get data form the database
     app.get("/product", async (req, res) => {
       const result = await productCollection.find().toArray();
       res.send(result);
     });
 
-// get cart form the database
+    // get cart form the database
     app.get("/cart", async (req, res) => {
       const result = await cartCollection.find().toArray();
+      res.send(result);
+    });
+
+    // delete my cart data from database
+    app.delete("/cart/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id),
+      };
+      const result = await cartCollection.deleteOne(query);
       res.send(result);
     });
 
     // for update ..................
     app.get("/product/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const result = await productCollection.findOne(query);
       res.send(result);
     });
 
     // updated media put on the mongodb
-    app.put("/product/:id", async(req, res)=>{
+    app.put("/product/:id", async (req, res) => {
       const id = req.params.id
-      const filter = {_id: new ObjectId(id)}
-      const options = {upsert: true}
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true }
       const updateProduct = req.body
       const product = {
         $set: {
-          name : updateProduct.name,
+          name: updateProduct.name,
           brand: updateProduct.brand,
           price: updateProduct.price,
           photo: updateProduct.photo,
